@@ -2,11 +2,15 @@
   "name": "graph-data",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "server": "cd packages/server && node server.js"
   },
   "dependencies": {
     "core-js": "^3.8.3",
