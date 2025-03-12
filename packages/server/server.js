@@ -30,7 +30,6 @@ function buildHierarchy(data) {
 
   return tree;
 }
-// Initialize the Neo4j Driver and test connection
 (async () => {
   let driver;
 
@@ -39,9 +38,6 @@ function buildHierarchy(data) {
     const serverInfo = await driver.getServerInfo();
     console.log('Connection established');
     console.log(serverInfo);
-
-    // Continue with your server logic if connection is successful
-    // Helper function to build the hierarchy
 
     app.get('/api/data', async (req, res) => {
       try {
