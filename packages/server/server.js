@@ -1,6 +1,7 @@
 const neo4j = require('neo4j-driver');
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
