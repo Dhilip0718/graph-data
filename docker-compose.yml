@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./packages/server
+    ports:
+      - "3001:3001"
+    environment:
+      NEO4J_URI: "bolt://<AURA_BOLT_URL>"
+      NEO4J_USER: "<AURA_USER>"
+      NEO4J_PASSWORD: "<AURA_PASSWORD>"
+    container_name: backend-service
+
+  frontend:
+    build:
+      context: .
+    ports:
+      - "8080:80"
+    environment:
+      VUE_APP_API_URL: "http://backend:3001/api/data"
+    depends_on:
+      - backend
+    container_name: frontend-service
