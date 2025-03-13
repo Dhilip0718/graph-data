@@ -7,11 +7,25 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 
-// Retrieve connection details from environment variables
+/**
+ * The Config details for connecting to the Neo4j database.
+ *
+ * This value is retrieved from the environment variable `NEO4J_PASSWORD`.
+ * If the environment variable is not set, a default password is used.
+ *
+ */
 const NEO4J_URI = process.env.NEO4J_URI || 'neo4j+s://c67feb71.databases.neo4j.io';
 const NEO4J_USERNAME = process.env.NEO4J_USERNAME || 'neo4j';
 const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD || 'ACCK6rHcPcDSgSJxGHBz9AL45B6FE1NuZw_Ekmlex5g';
 const PORT = process.env.PORT || 3000;
+
+function log(message, type = 'log') {
+  if (type === 'error') {
+    console.error(message);
+  } else {
+    console.log(message);
+  }
+}
 
 function buildHierarchy(data) {
   const nodes = {};
@@ -33,14 +47,20 @@ function buildHierarchy(data) {
 
   return tree;
 }
+
+/**
+ * Transforms the result records into an array of objects with specific properties.
+ *
+ */
+
 (async () => {
   let driver;
 
   try {
     driver = neo4j.driver(NEO4J_URI, neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD));
     const serverInfo = await driver.getServerInfo();
-    console.log('Connection established');
-    console.log(serverInfo);
+
+    console.log('Connection established', serverInfo);
 
     app.get('/api/data', async (req, res) => {
       try {
@@ -54,28 +74,28 @@ function buildHierarchy(data) {
           parent: record.get('parent'),
         }));
 
-        console.log('The data is fetched from the DB', data);
         await session.close();
 
         const hierarchicalData = buildHierarchy(data);
-        console.log('The data is fetched from the DB', hierarchicalData);
+
         res.json(hierarchicalData);
       } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Failed to fetch data' });
       }
     });
 
     if (!PORT) {
-      console.error('PORT environment variable is not set!');
+      log('PORT environment variable is not set!', 'error');
       process.exit(1);
     }
-    console.log(`PORT environment variable: ${PORT}`);
+    // eslint-disable-next-line no-console
+    log(`PORT environment variable: ${PORT}`);
 
     app.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`);
+      log(`Server started on port ${PORT}`);
     });
   } catch (err) {
-    console.log(`Connection error\n${err}\nCause: ${err.cause}`);
+    // eslint-disable-next-line no-console
+    log(`Connection error\n${err}\nCause: ${err.cause}`, 'error');
   }
 })();

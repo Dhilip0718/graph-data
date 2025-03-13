@@ -39,7 +39,8 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await fetch('https://server-long-snow-8879.fly.dev/api/data');
+        // graph-data-server-01-f9aydbanfbf7dder.centralus-01.azurewebsites.net
+        const response = await fetch('https://node-server-graph-db.azurewebsites.net/api/data');
         const data = await response.json();
         console.log('Data:', data);
         this.renderGraph(data);
