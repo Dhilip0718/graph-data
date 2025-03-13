@@ -39,7 +39,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await fetch(process.env.VUE_APP_API_URL);
+        const response = await fetch('https://server-long-snow-8879.fly.dev/api/data');
         const data = await response.json();
         console.log('Data:', data);
         this.renderGraph(data);
