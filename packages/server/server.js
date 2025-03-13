@@ -60,7 +60,8 @@ function buildHierarchy(data) {
     driver = neo4j.driver(NEO4J_URI, neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD));
     const serverInfo = await driver.getServerInfo();
 
-    console.log('Connection established', serverInfo);
+    log('Connection established to server DB');
+    log(`Server address: ${serverInfo.address}`);
 
     app.get('/api/data', async (req, res) => {
       try {
@@ -88,14 +89,12 @@ function buildHierarchy(data) {
       log('PORT environment variable is not set!', 'error');
       process.exit(1);
     }
-    // eslint-disable-next-line no-console
     log(`PORT environment variable: ${PORT}`);
 
     app.listen(PORT, () => {
       log(`Server started on port ${PORT}`);
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
     log(`Connection error\n${err}\nCause: ${err.cause}`, 'error');
   }
 })();
