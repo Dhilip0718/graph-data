@@ -13,7 +13,6 @@
           aria-label='Deselect Node'
           >x</span
         >
-        <p>123</p>
         <p>{{ selectedNode.description }}</p>
       </div>
     </div>
@@ -37,17 +36,31 @@ export default {
     this.fetchData();
   },
   methods: {
+    /**
+     * Fetches data from the URL specified in the environment variable `VUE_APP_GRAPH_DATA_URL`.
+     * If an error occurs during the fetch operation, it logs the error to the console.
+     *
+     */
     async fetchData() {
       try {
-        // graph-data-server-01-f9aydbanfbf7dder.centralus-01.azurewebsites.net
-        const response = await fetch('https://node-server-graph-db.azurewebsites.net/api/data');
+        const response = await fetch(process.env.VUE_APP_GRAPH_DATA_URL);
         const data = await response.json();
-        console.log('Data:', data);
         this.renderGraph(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
+    /**
+     * Renders a hierarchical graph using D3.js.
+     *
+     * @param {Object[]} data - The hierarchical data to be visualized.
+     *
+     * This function creates an SVG element and uses D3's tree layout to
+     * generate a hierarchical structure. It appends paths for links between
+     * nodes and groups for each node, including circles and text labels.
+     * Nodes are colored based on whether they have a parent or not.
+     * The graph is rendered only once, controlled by the `graphRendered` flag.
+     */
     renderGraph(data) {
       if (this.graphRendered) {
         return;
@@ -65,7 +78,6 @@ export default {
         .separation((a, b) => (a.parent === b.parent ? 1 : 2));
 
       const root = d3.hierarchy(data[0]);
-      console.log('Root Node Data:', root.data);
       treeLayout(root);
 
       svg
@@ -108,6 +120,18 @@ export default {
 
       this.graphRendered = true;
     },
+
+    /**
+     * Handles the click event on a node in the hierarchical chart.
+     *
+     * @param {Event} event - The click event triggered by the user on the node.
+     *
+     * This method performs the following actions:
+     * - Retrieves the clicked node's data.
+     * - Toggles the selection state of the clicked node.
+     * - If the node is already selected, it deselects it and sets `dataLoaded` to false.
+     * - Updates the CSS class of the selected node for visual indication.
+     */
     handleNodeClick(event) {
       const g = event.currentTarget;
       const nodeData = g.nodeData.data;
@@ -130,6 +154,21 @@ export default {
         }
       }
     },
+
+    /**
+     * Deselects the currently selected node in the hierarchical chart.
+     *
+     * This method performs the following actions:
+     * 1. Checks if there is a selected node.
+     * 2. If a node is selected, retrieves its name.
+     * 3. Iterates through all nodes in the chart and removes the 'selected-node' class
+     *    from the node that matches the selected node's name.
+     * 4. Resets the selected node to null.
+     * 5. Sets the dataLoaded flag to false.
+     * 6. Waits for the next DOM update cycle to complete.
+     *
+     * @returns {Promise<void>} A promise that resolves when the next DOM update cycle is complete.
+     */
     async deselectNode() {
       if (this.selectedNode) {
         const selectedNodeName = this.selectedNode.name;
