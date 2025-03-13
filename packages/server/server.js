@@ -1,6 +1,7 @@
+const cors = require('cors');
 const neo4j = require('neo4j-driver');
 const express = require('express');
-const cors = require('cors');
+
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(cors());
 const NEO4J_URI = process.env.NEO4J_URI || 'neo4j+s://c67feb71.databases.neo4j.io';
 const NEO4J_USERNAME = process.env.NEO4J_USERNAME || 'neo4j';
 const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD || 'ACCK6rHcPcDSgSJxGHBz9AL45B6FE1NuZw_Ekmlex5g';
+const PORT = process.env.PORT || 3000;
 
 function buildHierarchy(data) {
   const nodes = {};
@@ -64,7 +66,15 @@ function buildHierarchy(data) {
       }
     });
 
-    app.listen(3000, () => console.log('Server started on port 3000'));
+    if (!PORT) {
+      console.error('PORT environment variable is not set!');
+      process.exit(1);
+    }
+    console.log(`PORT environment variable: ${PORT}`);
+
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
   } catch (err) {
     console.log(`Connection error\n${err}\nCause: ${err.cause}`);
   }

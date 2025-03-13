@@ -17,8 +17,6 @@ COPY packages/server/ .
 # Expose the port your app runs on
 EXPOSE 3000
 
-# Define environment variable
-ENV NODE_ENV production
 
 # Run the app
 CMD [ "npm", "start" ]

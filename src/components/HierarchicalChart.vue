@@ -39,7 +39,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await fetch('http://localhost:3000/api/data');
+        const response = await fetch(process.env.VUE_APP_API_URL);
         const data = await response.json();
         console.log('Data:', data);
         this.renderGraph(data);
