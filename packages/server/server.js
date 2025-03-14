@@ -32,19 +32,15 @@ function buildHierarchy(data) {
   const tree = [];
 
   data.forEach((item) => {
-    nodes[item.name] = { ...item, children: [] };
-  });
+    const node = { ...item, children: [] };
+    nodes[item.name] = node;
 
-  data.forEach((item) => {
-    if (item.parent) {
-      if (nodes[item.parent]) {
-        nodes[item.parent].children.push(nodes[item.name]);
-      }
-    } else {
-      tree.push(nodes[item.name]);
+    if (item.parent && nodes[item.parent]) {
+      nodes[item.parent].children.push(node);
+    } else if (!item.parent) {
+      tree.push(node);
     }
   });
-
   return tree;
 }
 
@@ -67,7 +63,7 @@ function buildHierarchy(data) {
       try {
         const session = driver.session();
         const result = await session.run(
-          'MATCH (n) RETURN n.name AS name, n.description AS description, n.parent AS parent',
+          'MATCH (n) OPTIONAL MATCH (n)-[:IS_CHILD_OF]->(parent) RETURN n.name AS name, n.description AS description, parent.name AS parent',
         );
         const data = result.records.map((record) => ({
           name: record.get('name'),
@@ -78,7 +74,6 @@ function buildHierarchy(data) {
         await session.close();
 
         const hierarchicalData = buildHierarchy(data);
-
         res.json(hierarchicalData);
       } catch (error) {
         res.status(500).json({ error: 'Failed to fetch data' });
