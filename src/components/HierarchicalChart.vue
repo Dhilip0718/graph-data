@@ -3,7 +3,8 @@
     <div id='graph'></div>
     <div v-if='dataLoaded'>
       <div class='node-details'>
-        <h3>{{ selectedNode.name }}</h3>
+        <div class='card-header'>
+        <h5>Node Details</h5>
         <span
           class='deselect-icon'
           @click='deselectNode'
@@ -13,7 +14,11 @@
           aria-label='Deselect Node'
           >x</span
         >
+      </div>
+      <div class='card-body'>
+        <h3>{{ selectedNode.name }}</h3>
         <p>{{ selectedNode.description }}</p>
+      </div>
       </div>
     </div>
   </div>
@@ -67,12 +72,12 @@ export default {
       }
 
       const width = 950;
-      const height = 750;
+      const height = 700;
       const nodeRadius = 50;
       const padding = -20;
 
       const svg = d3.select('#graph').append('svg').attr('width', width).attr('height', height)
-        .attr('viewBox', [padding, padding, width, height]);
+        .attr('viewBox', [padding, 0, width, height]);
 
       const treeLayout = d3
         .tree()
@@ -222,15 +227,13 @@ export default {
 
 .node-details {
   position: absolute;
-    top: 150px;
-    left: 50px;
-    background-color: white;
-    border: 1px solid #eee;
-    padding: 20px;
-    z-index: 100;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    transition: left 0.3sease-in-out;
+  top: 150px;
+  left: 50px;
+  background-color: white;
+  border: 1px solid #eee;
+  z-index: 100;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 .container {
@@ -247,11 +250,33 @@ export default {
 }
 
 .deselect-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   cursor: pointer;
-  font-size: 22px;
-  color: #2E382E;
+  font-size: 20px;
+  line-height: 0em;
+  padding: 10px;
+  color: #939393;
+  font-weight: bold;
+}
+
+.node-details .card-header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+}
+
+.node-details .card-header h5 {
+  margin: 0;
+  padding-left: 10px;
+}
+
+.node-details .card-body {
+  padding: 10px;
+}
+
+.node-details .card-body h3 {
+  margin: 0;
+  text-align: left;
 }
 </style>
