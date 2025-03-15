@@ -66,11 +66,13 @@ export default {
         return;
       }
 
-      const width = 900;
-      const height = 700;
-      const nodeRadius = 45;
+      const width = 950;
+      const height = 750;
+      const nodeRadius = 50;
+      const padding = -20;
 
-      const svg = d3.select('#graph').append('svg').attr('width', width).attr('height', height);
+      const svg = d3.select('#graph').append('svg').attr('width', width).attr('height', height)
+        .attr('viewBox', [padding, padding, width, height]);
 
       const treeLayout = d3
         .tree()
@@ -108,15 +110,10 @@ export default {
 
       nodes
         .append('circle')
-        .attr('r', nodeRadius)
-        .attr('fill', (d) => (d.data.parent ? 'lightblue' : 'orange'));
+        .attr('r', nodeRadius);
 
       nodes
-        .append('text')
-        .attr('dy', '0.41em')
-        .attr('x', (d) => (d.children ? 6 : -5))
-        .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-        .text((d) => d.data.name);
+        .append('text').text((d) => d.data.name);
 
       this.graphRendered = true;
     },
@@ -197,25 +194,43 @@ export default {
 
 <style>
 .node circle {
-  stroke: #999;
-  stroke-width: 1px;
+  fill: #50C9CE;
+  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
+  transition: r 0.3s ease-in-out;
+}
+
+.node circle:hover, .selected-node circle {
+  r: 55;
+  cursor: pointer;
+}
+
+.node text {
+  fill: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  cursor: pointer;
 }
 
 .link {
   fill: none;
-  stroke: #999;
+  stroke: #2E382E;
   stroke-opacity: 0.6;
   stroke-width: 1.5px;
 }
 
 .node-details {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  z-index: 100;
+    top: 150px;
+    left: 50px;
+    background-color: white;
+    border: 1px solid #eee;
+    padding: 20px;
+    z-index: 100;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    transition: left 0.3sease-in-out;
 }
 
 .container {
@@ -225,15 +240,18 @@ export default {
 }
 
 .selected-node circle {
-  stroke: blue;
-  stroke-width: 3px;
+  stroke: #50C9CE;
+  stroke-width: 20px;
+  stroke-opacity: 0.4;
+
 }
 
 .deselect-icon {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 22px;
+  color: #2E382E;
 }
 </style>
