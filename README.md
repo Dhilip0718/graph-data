@@ -94,11 +94,11 @@ This project visualizes hierarchical data, demonstrating parent-child relationsh
 -   `/api/data`: Retrieves hierarchical data from the Neo4j database.
 
 
-## Project Structure
+## Project Landscape
 
-Here's a visual representation of the project structure:
+Here's a visual representation of the project Landscape:
 
-![Project Structure](./src/assets/project-structure.png)
+![Project Landscape](./src/assets/project-structure.png)
 
 ## Author
 
