@@ -98,7 +98,7 @@ This project visualizes hierarchical data, demonstrating parent-child relationsh
 
 Here's a visual representation of the project structure:
 
-![Project Structure](src/assets/project-structure.png)
+![Project Structure](./src/assets/project-structure.png)
 
 ## Author
 
