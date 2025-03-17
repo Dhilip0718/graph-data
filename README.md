@@ -8,16 +8,13 @@ This project visualizes hierarchical data, demonstrating parent-child relationsh
 
 -   **Hierarchical Visualization:** Clear graphical representation of parent-child relationships.
 -   **Interactive Nodes:** Clickable nodes with detailed descriptions displayed in a popup.
--   **Dynamic Data Fetching:** Real-time data retrieval from a Neo4j database via a RESTful API.
--   **Responsive Design:** Ensures a seamless user experience across various screen sizes.
+-   **Data Fetching:** Real-time data retrieval from a Neo4j database via a RESTful API.
 
 ## Technologies Used
 
 -   **Frontend:**
     -   Vue.js 2
-    -   Vue Test Utils (for unit testing)
-    -   Jest (for test runner)
-    -   D3.js (for visualization)
+    -   D3.js library(for visualization)
 -   **Backend:**
     -   Node.js
     -   Express.js
@@ -45,14 +42,17 @@ This project visualizes hierarchical data, demonstrating parent-child relationsh
     cd graph-data
     ```
 
-2.  **Install dependencies:**
+2.  **Install dependencies for node:**
+    cd graph-data/packages/server
+    ```bash
+    npm install
+   
+    ```
+3. **Install dependencies:**
+    cd graph-data
 
     ```bash
     npm install
-    # or
-    yarn install
-    # or
-    pnpm install
     ```
 
 ### Development
