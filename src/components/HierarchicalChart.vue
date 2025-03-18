@@ -48,7 +48,7 @@ export default {
      */
     async fetchData() {
       try {
-        const response = await fetch('http://localhost:3000/api/data');
+        const response = await fetch('https://graph-data-bckup-01.azurewebsites.net/api/data');
         const data = await response.json();
         this.renderGraph(data);
       } catch (error) {
